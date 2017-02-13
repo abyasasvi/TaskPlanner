@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "Your Tasks";
+}
+
+<div class="row tasks-cont" ng-app="myApp" ng-controller="myCtrl">
+    <div class="col-md-4" ng-repeat="tasklist in tasks">
+        <div class="tasks-col droptarget" ondrop="drop(event)" ondragover="allowDrop(event)" id="task-col-{{tasklist.type_id}}">
+            <div class="panel panel-default">
+                <span class="glyphicon glyphicon-plus add-task btn btn-success" ng-click="addTask(tasklist)"></span>
+                <h4 class="panel-heading">{{tasklist.type_name}}</h4>
+            </div>
+            <div ng-repeat="task in tasklist.tasks" class="task-card panel " ondragstart="drag(event)"  draggable="true" id="card-{{task.id}}">
+                <div ng-show="!task.isEditing" class="panel-{{task.status}}">
+                    <div class="panel-heading"><p class="panel-title">{{task.title}}</p></div>
+                    <div class="panel-body">
+                        <p><label class="text-muted">Description: </label> {{task.desp}}</p>
+                        <p><label class="text-muted">Deadline: </label> {{task.due_date}}</p>
+                        <p><label class="text-muted">Time Required: </label> {{task.est_time}} day(s)</p>
+                        <span ng-click="task.isEditing= true;" class="glyphicon glyphicon-edit btn btn-warning pull-right"></span>
+                    </div>
+                </div>
+                <div ng-show="task.isEditing" ng-init="task1=clone(task);">
+
+                            
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="control-label" for="inputDefault">Task Title</label>
+                                <input type="text" class="form-control" value="{{task.title}}" ng-model="task1.title">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="inputDefault">Description</label>
+                                <input type="text" class="form-control" value="{{task.desp}}" ng-model="task1.desp">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="inputDefault">Deadline</label>
+                                <input type="date" class="form-control" value="{{task.due_date}}" ng-model="task1.due_date">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="inputDefault">Estimated Days</label>
+                                <input type="text" class="form-control" value="{{task.est_time}}" ng-model="task1.est_time">
+                            </div>
+                            <span ng-click="saveTask(task1, task.index);task.isEditing= false;" class="glyphicon glyphicon-ok pull-right btn btn-success"></span>
+                            <span ng-click="task.isEditing= false;" class="glyphicon glyphicon-remove btn btn-danger"></span>
+                        </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="modal" ng-show="addTaskObj.type_name">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancelAddTask(addTaskObj)">&times;</button>
+                    <h4 class="modal-title">{{addTaskObj.type_name}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label" for="inputDefault">Task Title</label>
+                        <input type="text" class="form-control" value="{{addTaskObj.title}}" ng-model="addTaskObj.title">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="inputDefault">Description</label>
+                        <input type="text" class="form-control" value="{{addTaskObj.desp}}" ng-model="addTaskObj.desp">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="inputDefault">Deadline</label>
+                        <input type="date" class="form-control" value="{{addTaskObj.due_date}}" ng-model="addTaskObj.due_date">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="inputDefault">Estimated Days</label>
+                        <input type="text" class="form-control" value="{{addTaskObj.est_time}}" ng-model="addTaskObj.est_time">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancelAddTask(addTaskObj)">Close</button>
+                    <button type="button" class="btn btn-primary" ng-click="saveAddTask(addTaskObj)">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

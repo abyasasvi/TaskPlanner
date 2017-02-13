@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "Reminders";
+}
+
+<div class="row rems-cont" ng-app="myApp" ng-controller="remsCtrl">
+    <span class="glyphicon glyphicon-plus add-rem btn btn-success" ng-click="addRem()"></span>
+
+
+        <div class="rems-col col-md-4" ng-repeat="rem in remsList">
+            <div  class="rem-card panel" id="rem-{{task.id}}">
+                <div ng-show="!rem.isEditing" class="panel-{{rem.status}}">
+                    <div class="panel-heading"><p class="panel-title">{{rem.title}}</p></div>
+                    <div class="panel-body">
+                        <p><label class="text-muted">Description: </label> {{rem.desp}}</p>
+                        <p><label class="text-muted">Deadline: </label> {{rem.due_date}}</p>
+                        <p><label class="text-muted">Time Required: </label> {{rem.remind_before}} min(s)</p>
+                        <span ng-click="rem.isEditing= true;" class="glyphicon glyphicon-edit btn btn-warning pull-right"></span>
+                    </div>
+                </div>
+                <div ng-show="rem.isEditing" ng-init="rem1=clone(rem);">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label class="control-label" for="inputDefault">Task Title</label>
+                            <input type="text" class="form-control" value="{{rem.title}}" ng-model="rem1.title">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="inputDefault">Description</label>
+                            <input type="text" class="form-control" value="{{rem.desp}}" ng-model="rem1.desp">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="inputDefault">Deadline</label>
+                            <input type="datetime-local" class="form-control" value="{{rem.due_date}}" ng-model="rem1.due_date">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="inputDefault">Estimate</label>
+                            <input type="text" class="form-control" value="{{rem.remind_before}}" ng-model="rem1.remind_before">
+                        </div>
+                        <span ng-click="saveEditRem(rem1, $index);rem.isEditing= false;" class="glyphicon glyphicon-ok pull-right btn btn-success"></span>
+                        <span ng-click="rem.isEditing= false;" class="glyphicon glyphicon-remove btn btn-danger"></span>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="modal" ng-show="addRemObj.id">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancelNewRem()">&times;</button>
+                    <h4 class="modal-title">{{addRemObj.type_name}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label" for="inputDefault">Task Title</label>
+                        <input type="text" class="form-control" value="{{addRemObj.title}}" ng-model="addRemObj.title">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="inputDefault">Description</label>
+                        <input type="text" class="form-control" value="{{addRemObj.desp}}" ng-model="addRemObj.desp">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="inputDefault">At</label>
+                        <input type="datetime-local" class="form-control" value="{{addRemObj.due_date}}" ng-model="addRemObj.due_date">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="inputDefault">Remind Before</label>
+                        <input type="text" class="form-control" value="{{addRemObj.remind_before}}" ng-model="addRemObj.remind_before">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancelNewRem()">Close</button>
+                    <button type="button" class="btn btn-primary" ng-click="saveNewRem(addRemObj)">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
